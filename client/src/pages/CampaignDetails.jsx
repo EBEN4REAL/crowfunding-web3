@@ -10,22 +10,30 @@ import { thirdweb } from '../assets';
 const CampaignDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { donate, getDonations, contract, address } = useStateContext();
+  const { donate, getDonations, contract, address, getNumberOfCampaigns } = useStateContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState('');
   const [donators, setDonators] = useState([]);
+  const [campaignCount, setCampaignCount] = useState(0)
 
   const remainingDays = daysLeft(state.deadline);
 
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
-
     setDonators(data);
   }
 
+  const fetchCampaignCount = async () => {
+    const campaignCount = await getNumberOfCampaigns()
+    setCampaignCount(campaignCount)
+  }
+
   useEffect(() => {
-    if(contract) fetchDonators();
+    if(contract) {
+      fetchDonators()
+      fetchCampaignCount()
+    };
   }, [contract, address])
 
   const handleDonate = async () => {
@@ -68,7 +76,7 @@ const CampaignDetails = () => {
               </div>
               <div>
                 <h4 className="font-epilogue font-semibold text-[14px] text-white break-all">{state.owner}</h4>
-                <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">10 Campaigns</p>
+                <p className="mt-[4px] font-epilogue font-normal text-[12px] text-[#808191]">{campaignCount} Campaigns</p>
               </div>
             </div>
           </div>
