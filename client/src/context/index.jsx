@@ -45,7 +45,7 @@ export const StateContextProvider = ({ children }) => {
       pId: i
     }));
 
-    return parsedCampaings;
+    return parsedCampaings.reverse();
   }
 
   const getUserCampaigns = async () => {
@@ -53,7 +53,7 @@ export const StateContextProvider = ({ children }) => {
 
     const filteredCampaigns = allCampaigns.filter((campaign) => campaign.owner === address);
 
-    return filteredCampaigns;
+    return filteredCampaigns.reverse();
   }
 
   const donate = async (pId, amount) => {

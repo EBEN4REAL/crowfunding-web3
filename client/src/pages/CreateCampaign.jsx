@@ -28,14 +28,15 @@ const CreateCampaign = () => {
     e.preventDefault();
 
     checkIfImage(form.image, async (exists) => {
+      setIsLoading(true)
+      await createCampaign({ ...form, target: ethers.utils.parseUnits(form.target, 18)})
+      setIsLoading(false);
+      navigate('/');
       if(exists) {
-        setIsLoading(true)
-        await createCampaign({ ...form, target: ethers.utils.parseUnits(form.target, 18)})
-        setIsLoading(false);
-        navigate('/');
+        
       } else {
-        alert('Provide valid image URL')
-        setForm({ ...form, image: '' });
+        // alert('Provide valid image URL')
+        // setForm({ ...form, image: '' });
       }
     })
   }
